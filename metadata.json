@@ -2,7 +2,9 @@
   "uuid": "potato@fqxp.de",
   "name": "potato",
   "description": "A Pomodoro timer for GNOME Shell",
-  "shell-version": ["48"],
+  "shell-version": [
+    "48"
+  ],
   "version": 1,
   "url": "",
   "gettext-domain": "potato",

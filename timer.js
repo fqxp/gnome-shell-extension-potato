@@ -22,7 +22,7 @@ export const TimerManager = GObject.registerClass({
         'work-ended': {},        // play sound, show overlay
         'rest-ended': {},        // play sound, show "start working" button
         'negative-reminder': {}, // play sound, re-show overlay after 5min negative
-        'rest-overtime-ping': {},// repeat sound every 60s in rest overtime
+        'rest-overtime-ping': {}, // repeat sound every 60s in rest overtime
     },
 }, class TimerManager extends GObject.Object {
     _init(settings, stateManager, gettext) {
@@ -101,6 +101,8 @@ export const TimerManager = GObject.registerClass({
 
     /**
      * Format seconds as MM:SS or -MM:SS
+     *
+     * @param {number=} seconds
      */
     formatTime(seconds) {
         if (seconds === undefined || seconds === null)
