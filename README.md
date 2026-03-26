@@ -34,7 +34,7 @@ make install
 On Wayland there's no hot reload — you need to log out/in. For faster iteration, use a nested session:
 
 ```sh
-dbus-run-session -- gnome-shell --nested --wayland
+MUTTER_DEBUG_DUMMY_MODE_SPECS="1600x900@60.0" dbus-run-session -- gnome-shell --nested --wayland
 ```
 
 Check logs:

@@ -26,15 +26,18 @@ export const PotatoIndicator = GObject.registerClass(
             });
             this.add_child(this._box);
 
-            // Icon
-            const iconPath = GLib.build_filenamev([
-                extensionPath,
-                'icons',
-                'tomato-symbolic.svg',
-            ]);
-            const gicon = Gio.icon_new_for_string(iconPath);
+            // Icons for each state
+            this._gicons = {};
+            for (const [key, file] of [
+                ['idle', 'tomato-idle.svg'],
+                ['running', 'tomato-running.svg'],
+                ['paused', 'tomato-paused.svg'],
+            ]) {
+                const path = GLib.build_filenamev([extensionPath, 'icons', file]);
+                this._gicons[key] = Gio.icon_new_for_string(path);
+            }
             this._icon = new St.Icon({
-                gicon,
+                gicon: this._gicons.idle,
                 style_class: 'system-status-icon',
                 icon_size: 16,
             });
@@ -249,11 +252,18 @@ export const PotatoIndicator = GObject.registerClass(
             const phase = this._timer.phase;
 
             if (phase === Phase.IDLE) {
+                this._icon.gicon = this._gicons.idle;
                 this._label.visible = false;
                 this._label.style =
                     'margin-left: 4px; font-variant-numeric: tabular-nums;';
                 return;
             }
+
+            // Update icon based on phase
+            if (phase === Phase.PAUSED)
+                this._icon.gicon = this._gicons.paused;
+            else
+                this._icon.gicon = this._gicons.running;
 
             const seconds = this._timer.getRemainingSeconds();
             this._label.text = this._timer.formatTime(seconds);
